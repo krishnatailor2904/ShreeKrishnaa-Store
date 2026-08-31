@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { scroll-behavior: smooth; }
+
+body {
+  @apply bg-ivory text-ink font-body antialiased;
+}
+
+::selection { background: #B8892E; color: #FAF7F0; }
+
+/* engraved text effect for nameplate demo */
+.engraved {
+  color: #d8d8d8;
+  text-shadow:
+    0px 1px 0px rgba(255,255,255,0.6),
+    0px -1px 1px rgba(0,0,0,0.55);
+}
+
+.gold-engraved {
+  color: #3a2c0c;
+  text-shadow:
+    0px 1px 0px rgba(255,235,180,0.7),
+    0px -1px 1px rgba(60,40,0,0.45);
+}
+
+.input {
+  @apply w-full px-4 py-3 rounded-lg border border-sage bg-white text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 transition-shadow;
+}
+
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
