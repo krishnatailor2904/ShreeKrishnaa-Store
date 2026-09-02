@@ -39,7 +39,10 @@ ${xmlUrls}
 </urlset>`;
 
     res.setHeader("Content-Type", "application/xml");
-    res.setHeader("Cache-Control", "s-maxage=3600, stale-while-revalidate=86400");
+    res.setHeader(
+      "Cache-Control",
+      "s-maxage=3600, stale-while-revalidate=86400"
+    );
 
     return res.status(200).send(xml);
   } catch (error) {
