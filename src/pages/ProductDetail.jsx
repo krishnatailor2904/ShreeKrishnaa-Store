@@ -5,6 +5,7 @@ import { Minus, Plus, ShieldCheck, Truck, RotateCcw } from "lucide-react";
 import toast from "react-hot-toast";
 import api from "../lib/api";
 import { useCart } from "../context/CartContext";
+import { Helmet } from "react-helmet-async";
 
 export default function ProductDetail() {
   const { slug } = useParams();
@@ -27,8 +28,86 @@ export default function ProductDetail() {
   };
 
   return (
+       <>
+    <Helmet>
+      <title>
+        {product.name} | Shree Krishnaa
+      </title>
+
+      <meta
+        name="description"
+        content={`${product.name} by Shree Krishnaa. Shop premium ${product.category_name || "police accessories and custom name plates"} with delivery across India.`}
+      />
+
+      <meta
+        name="robots"
+        content="index, follow"
+      />
+
+      <link
+        rel="canonical"
+        href={`https://shreekrishnaa.com/product/${product.slug}`}
+      />
+
+      {/* Open Graph */}
+      <meta
+        property="og:title"
+        content={`${product.name} | Shree Krishnaa`}
+      />
+
+      <meta
+        property="og:description"
+        content={product.description}
+      />
+
+      <meta
+        property="og:type"
+        content="product"
+      />
+
+      <meta
+        property="og:url"
+        content={`https://shreekrishnaa.com/product/${product.slug}`}
+      />
+
+      <meta
+        property="og:image"
+        content={product.image}
+      />
+
+      <meta
+        property="og:site_name"
+        content="Shree Krishnaa"
+      />
+
+      {/* Product Schema */}
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Product",
+          name: product.name,
+          description: product.description,
+          image: [product.image],
+          brand: {
+            "@type": "Brand",
+            name: "Shree Krishnaa",
+          },
+          offers: {
+            "@type": "Offer",
+            url: `https://shreekrishnaa.com/product/${product.slug}`,
+            priceCurrency: "INR",
+            price: Math.round(product.price),
+            availability:
+              "https://schema.org/InStock",
+            itemCondition:
+              "https://schema.org/NewCondition",
+          },
+        })}
+      </script>
+    </Helmet>
+
     <div className="max-w-7xl mx-auto px-6 lg:px-10 py-14">
-      <div className="grid md:grid-cols-2 gap-14">
+<div className="grid md:grid-cols-2 gap-14">
         <motion.div
           initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -91,5 +170,6 @@ export default function ProductDetail() {
         </motion.div>
       </div>
     </div>
+    </>
   );
 }

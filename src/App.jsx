@@ -28,12 +28,108 @@ function ScrollToTop() {
 
   return null;
 }
+function SEO() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const siteName = "Shree Krishnaa";
+    const baseUrl = "https://shreekrishnaa.com";
+
+    let title = `${siteName} | Police Accessories & Custom Name Plates`;
+    let description =
+      "Shree Krishnaa offers premium police accessories and custom name plates in acrylic, metal, gold and silver finishes. Shop personalized name plates with delivery across India.";
+
+    let noIndex = false;
+    let canonicalUrl = `${baseUrl}${pathname}`;
+
+    if (pathname === "/") {
+      title = "Shree Krishnaa | Police Accessories & Custom Name Plates";
+      description =
+        "Shree Krishnaa offers premium police accessories and custom name plates in acrylic, metal, gold and silver finishes. Shop personalized name plates with delivery across India.";
+    }
+
+    else if (pathname === "/shop") {
+      title = "Police Accessories & Custom Name Plates | Shree Krishnaa";
+      description =
+        "Shop police accessories and custom name plates at Shree Krishnaa. Explore personalized acrylic, metal, gold and silver name plates with delivery across India.";
+    }
+
+    else if (pathname === "/about") {
+      title = "About Shree Krishnaa | Police Accessories & Name Plates";
+      description =
+        "Learn about Shree Krishnaa, your destination for premium police accessories and personalized custom name plates.";
+    }
+
+    else if (pathname === "/contact") {
+      title = "Contact Shree Krishnaa | Police Accessories & Name Plates";
+      description =
+        "Contact Shree Krishnaa for custom name plates, police accessories, orders and product enquiries.";
+    }
+
+    else if (
+      pathname === "/cart" ||
+      pathname === "/checkout" ||
+      pathname === "/orders" ||
+      pathname === "/login" ||
+      pathname === "/register" ||
+      pathname === "/forgot-password"
+    ) {
+      noIndex = true;
+    }
+
+    document.title = title;
+
+    // Robots
+    let robotsTag = document.querySelector('meta[name="robots"]');
+
+    if (!robotsTag) {
+      robotsTag = document.createElement("meta");
+      robotsTag.setAttribute("name", "robots");
+      document.head.appendChild(robotsTag);
+    }
+
+    robotsTag.setAttribute(
+      "content",
+      noIndex ? "noindex, nofollow" : "index, follow"
+    );
+
+    // Meta description
+    let descriptionTag = document.querySelector(
+      'meta[name="description"]'
+    );
+
+    if (!descriptionTag) {
+      descriptionTag = document.createElement("meta");
+      descriptionTag.setAttribute("name", "description");
+      document.head.appendChild(descriptionTag);
+    }
+
+    descriptionTag.setAttribute("content", description);
+
+    // Canonical
+    let canonicalTag = document.querySelector(
+      'link[rel="canonical"]'
+    );
+
+    if (!canonicalTag) {
+      canonicalTag = document.createElement("link");
+      canonicalTag.setAttribute("rel", "canonical");
+      document.head.appendChild(canonicalTag);
+    }
+
+    canonicalTag.setAttribute("href", canonicalUrl);
+
+  }, [pathname]);
+
+  return null;
+}
 
 export default function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <Toaster position="top-center" toastOptions={{ style: { fontFamily: "Work Sans, sans-serif", fontSize: "14px" } }} />
       <ScrollToTop />
+      <SEO />
       <Navbar />
       <main className="flex-1">
         <AnimatePresence mode="wait">
