@@ -73,6 +73,15 @@ export default function Checkout() {
     ? `${API_BASE}/api/orders/upi-qr/?amount=${order.total_amount}&note=${encodeURIComponent(order.upi_ref_note)}`
     : "";
 
+  const upiId = "chauhanmhimanshu2005@okicici";
+  const payeeName = "Shree Krishnaa";
+  const upiParams = order
+    ? `pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${order.total_amount}&tn=${encodeURIComponent(order.upi_ref_note)}&cu=INR`
+    : "";
+  const gpayLink = `tez://upi/pay?${upiParams}`;
+  const phonepeLink = `phonepe://upi/pay?${upiParams}`;
+  const genericUpiLink = `upi://pay?${upiParams}`;
+
   return (
     <div className="max-w-2xl mx-auto px-6 py-14">
       {/* Step indicator */}
@@ -131,7 +140,27 @@ export default function Checkout() {
             <img src={qrUrl} alt="UPI QR Code" className="w-56 h-56" />
           </div>
           <p className="text-sm text-ink/60 mb-1">Scan with any UPI app (GPay, PhonePe, Paytm)</p>
-          <p className="text-xs text-ink/40 mb-6">UPI ID: 9408222280@ybl</p>
+          <p className="text-xs text-ink/40 mb-6">UPI ID: {upiId}</p>
+
+          <div className="mb-6">
+            <p className="text-xs text-ink/40 mb-3">— OR pay directly from your phone —</p>
+            <div className="flex gap-3">
+              <a
+                href={gpayLink}
+                onClick={() => { window.location.href = genericUpiLink; }}
+                className="flex-1 bg-[#4285F4] hover:opacity-90 text-white py-3 rounded-full font-badge uppercase tracking-wide text-xs transition-opacity flex items-center justify-center"
+              >
+                Pay via GPay
+              </a>
+              <a
+                href={phonepeLink}
+                onClick={() => { window.location.href = genericUpiLink; }}
+                className="flex-1 bg-[#5F259F] hover:opacity-90 text-white py-3 rounded-full font-badge uppercase tracking-wide text-xs transition-opacity flex items-center justify-center"
+              >
+                Pay via PhonePe
+              </a>
+            </div>
+          </div>
 
           <div className="border-t border-sage pt-6">
             <label className="block text-sm font-medium text-ink mb-2">
