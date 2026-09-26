@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Minus, Plus, ShieldCheck, Truck, RotateCcw } from "lucide-react";
+import { Minus, Plus, ShieldCheck, Truck, RotateCcw, PlayCircle } from "lucide-react";
 import toast from "react-hot-toast";
 import api from "../lib/api";
 import { useCart } from "../context/CartContext";
@@ -11,16 +11,42 @@ export default function ProductDetail() {
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
   const [qty, setQty] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
   const { addToCart } = useCart();
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    setActiveIndex(0);
     api.get(`/products/${slug}/`).then((r) => setProduct(r.data));
   }, [slug]);
+
+  // Main image + extra gallery images + videos, sab ek hi list me — taaki
+  // jitne bhi images/videos admin me add kiye ho, sab yaha dikhein.
+  const media = useMemo(() => {
+    if (!product) return [];
+
+    const items = [];
+
+    if (product.image) {
+      items.push({ type: "image", url: product.image });
+    }
+
+    (product.images || []).forEach((img) => {
+      if (img.image) items.push({ type: "image", url: img.image });
+    });
+
+    (product.videos || []).forEach((vid) => {
+      if (vid.video) items.push({ type: "video", url: vid.video });
+    });
+
+    return items;
+  }, [product]);
 
   if (!product) {
     return <div className="max-w-7xl mx-auto px-6 py-24 text-center text-ink/50">Loading...</div>;
   }
+
+  const activeMedia = media[activeIndex] || media[0];
 
   const handleAdd = () => {
     addToCart(product, qty);
@@ -108,14 +134,57 @@ export default function ProductDetail() {
 
     <div className="max-w-7xl mx-auto px-6 lg:px-10 py-14">
 <div className="grid md:grid-cols-2 gap-14">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.97 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4 }}
-          className="rounded-2xl overflow-hidden bg-sage/30 aspect-square"
-        >
-          <img src={product.image} alt={product.name} className="w-full h-full object-contain" />
-        </motion.div>
+        <div>
+          <motion.div
+            key={activeIndex}
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4 }}
+            className="rounded-2xl overflow-hidden bg-sage/30 aspect-square"
+          >
+            {activeMedia?.type === "video" ? (
+              <video
+                src={activeMedia.url}
+                controls
+                className="w-full h-full object-contain"
+              />
+            ) : (
+              <img
+                src={activeMedia?.url || product.image}
+                alt={product.name}
+                className="w-full h-full object-contain"
+              />
+            )}
+          </motion.div>
+
+          {/* Thumbnails - jitne bhi images/videos hain sab yaha dikhenge */}
+          {media.length > 1 && (
+            <div className="flex gap-3 mt-4 overflow-x-auto pb-1">
+              {media.map((item, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setActiveIndex(idx)}
+                  className={`relative shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors ${
+                    idx === activeIndex ? "border-teal-600" : "border-sage"
+                  }`}
+                  aria-label={`Show ${item.type} ${idx + 1}`}
+                >
+                  {item.type === "video" ? (
+                    <>
+                      <video src={item.url} className="w-full h-full object-cover" />
+                      <span className="absolute inset-0 flex items-center justify-center bg-black/30">
+                        <PlayCircle className="w-5 h-5 text-white" />
+                      </span>
+                    </>
+                  ) : (
+                    <img src={item.url} alt="" className="w-full h-full object-cover" />
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}>
           <Link to={`/shop?category=${product.category_slug}`} className="text-xs font-badge uppercase tracking-wider text-teal-600">
