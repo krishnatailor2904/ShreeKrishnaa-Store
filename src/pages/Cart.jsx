@@ -3,11 +3,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, PenLine } from "lucide-react";
 import toast from "react-hot-toast";
 import { useCart } from "../context/CartContext";
-import { useAuth } from "../context/AuthContext";
 
 export default function Cart() {
   const { items, updateQty, removeFromCart, updateCustomization, totalAmount } = useCart();
-  const { user } = useAuth();
   const navigate = useNavigate();
 
   const handleCheckout = () => {
@@ -16,11 +14,7 @@ export default function Cart() {
       toast.error(`Please enter the name to engrave for "${missing.name}"`);
       return;
     }
-    if (!user) {
-      navigate("/login?next=/checkout");
-    } else {
-      navigate("/checkout");
-    }
+    navigate("/checkout");
   };
 
   if (items.length === 0) {

@@ -57,6 +57,7 @@ export default function Checkout() {
     try {
       const fd = new FormData();
       if (screenshot) fd.append("payment_screenshot", screenshot);
+      if (!user && order.guest_token) fd.append("guest_token", order.guest_token);
       await api.post(`/orders/${order.id}/mark-paid/`, fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -190,13 +191,13 @@ export default function Checkout() {
           <h2 className="font-display text-3xl text-ink mb-3">Payment Submitted!</h2>
           <p className="text-ink/60 mb-8 leading-relaxed">
             Order #{order.id} is awaiting verification. Once we confirm your payment,
-            you'll get a confirmation email and your order will be shipped shortly.
+            {user ? " you'll get a confirmation email and" : " you'll get an SMS update on your phone and"} your order will be shipped shortly.
           </p>
           <button
-            onClick={() => navigate("/orders")}
+            onClick={() => navigate(user ? "/orders" : "/shop")}
             className="bg-teal-600 hover:bg-teal-700 text-white px-7 py-3 rounded-full font-badge uppercase text-sm tracking-wide transition-colors"
           >
-            View My Orders
+            {user ? "View My Orders" : "Continue Shopping"}
           </button>
         </motion.div>
       )}
