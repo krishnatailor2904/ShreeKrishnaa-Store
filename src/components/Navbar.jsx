@@ -129,6 +129,12 @@ export default function Navbar() {
                       </>
                     ) : (
                       <div className="p-3 flex flex-col gap-2">
+                        <button
+                          onClick={() => { setOpen(false); navigate("/track-order"); }}
+                          className="w-full flex items-center justify-center gap-2 py-2 rounded-lg border border-sage text-ink/70 text-sm font-medium hover:bg-teal-50 transition-colors"
+                        >
+                          <Package className="w-4 h-4" /> Track Order
+                        </button>
                         <Link
                           to="/login"
                           onClick={() => setOpen(false)}
@@ -181,6 +187,7 @@ export default function Navbar() {
                 </>
               ) : (
                 <>
+                  <Link to="/track-order" onClick={() => setMenuOpen(false)}>Track Order</Link>
                   <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
                   <Link to="/register" onClick={() => setMenuOpen(false)}>Create Account</Link>
                 </>

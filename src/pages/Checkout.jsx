@@ -192,13 +192,38 @@ export default function Checkout() {
           <p className="text-ink/60 mb-8 leading-relaxed">
             Order #{order.id} is awaiting verification. Once we confirm your payment,
             {user ? " you'll get a confirmation email and" : " you'll get an SMS update on your phone and"} your order will be shipped shortly.
+            {!user && (
+              <>
+                <br /><br />
+                <span className="text-sm text-ink/50">
+                  Save this — Order ID: <strong>#{order.id}</strong>, Phone: <strong>{form.phone}</strong> — you'll need it to track your order.
+                </span>
+              </>
+            )}
           </p>
-          <button
-            onClick={() => navigate(user ? "/orders" : "/shop")}
-            className="bg-teal-600 hover:bg-teal-700 text-white px-7 py-3 rounded-full font-badge uppercase text-sm tracking-wide transition-colors"
-          >
-            {user ? "View My Orders" : "Continue Shopping"}
-          </button>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            {user ? (
+              <button
+                onClick={() => navigate("/orders")}
+                className="bg-teal-600 hover:bg-teal-700 text-white px-7 py-3 rounded-full font-badge uppercase text-sm tracking-wide transition-colors"
+              >
+                View My Orders
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate(`/track-order?order_id=${order.id}&phone=${encodeURIComponent(form.phone)}`)}
+                className="bg-teal-600 hover:bg-teal-700 text-white px-7 py-3 rounded-full font-badge uppercase text-sm tracking-wide transition-colors"
+              >
+                Track This Order
+              </button>
+            )}
+            <button
+              onClick={() => navigate("/shop")}
+              className="border border-sage text-ink/70 px-7 py-3 rounded-full font-badge uppercase text-sm tracking-wide hover:bg-teal-50 transition-colors"
+            >
+              Continue Shopping
+            </button>
+          </div>
         </motion.div>
       )}
     </div>
