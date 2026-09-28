@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Package } from "lucide-react";
 import api from "../lib/api";
+import { useAuth } from "../context/AuthContext";
+import { getGuestOrders } from "../lib/Guestorders";
 
 const statusColor = {
   pending: "bg-yellow-100 text-yellow-700",
@@ -17,10 +19,25 @@ const statusColor = {
 export default function MyOrders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user, loading: authLoading } = useAuth();
 
   useEffect(() => {
-    api.get("/orders/my/").then((r) => setOrders(r.data)).finally(() => setLoading(false));
-  }, []);
+    if (authLoading) return;
+    setLoading(true);
+    let request;
+    if (user) {
+      request = api.get("/orders/my/");
+    } else {
+      const saved = getGuestOrders();
+      request = saved.length
+        ? api.post("/orders/guest/", { orders: saved })
+        : Promise.resolve({ data: [] });
+    }
+    request
+      .then((r) => setOrders(r.data))
+      .catch(() => setOrders([]))
+      .finally(() => setLoading(false));
+  }, [user, authLoading]);
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-14">
@@ -45,7 +62,7 @@ export default function MyOrders() {
             >
               <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                 <div>
-                  <p className="font-display text-xl text-ink">Order </p>
+                  <p className="font-display text-xl text-ink">Order #{order.id}</p>
                   <p className="text-xs text-ink/40">{new Date(order.created_at).toLocaleString()}</p>
                 </div>
                 <div className="flex gap-2">
@@ -57,6 +74,9 @@ export default function MyOrders() {
                   </span>
                 </div>
               </div>
+              <p className="text-sm text-ink/60 mb-4">
+                Deliver to: {order.address_line}, {order.city}, {order.state} - {order.pincode}
+              </p>
               <div className="space-y-2 mb-4">
                 {order.items.map((item) => (
                   <div key={item.id} className="flex justify-between text-sm text-ink/70">

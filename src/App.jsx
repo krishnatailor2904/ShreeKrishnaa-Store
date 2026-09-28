@@ -5,7 +5,6 @@ import { useEffect } from "react";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import ProtectedRoute from "./components/ProtectedRoute";
 
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
@@ -16,7 +15,6 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import MyOrders from "./pages/MyOrders";
-import TrackOrder from "./pages/Trackorder";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 
@@ -71,7 +69,6 @@ function SEO() {
       pathname === "/cart" ||
       pathname === "/checkout" ||
       pathname === "/orders" ||
-      pathname === "/track-order" ||
       pathname === "/login" ||
       pathname === "/register" ||
       pathname === "/forgot-password"
@@ -141,8 +138,7 @@ export default function App() {
             <Route path="/product/:slug" element={<ProductDetail />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
-            <Route path="/orders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
-            <Route path="/track-order" element={<TrackOrder />} />
+            <Route path="/orders" element={<MyOrders />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
