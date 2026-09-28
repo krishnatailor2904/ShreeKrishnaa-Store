@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import api, { API_BASE } from "../lib/api";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import { saveGuestOrder } from "../lib/Guestorders";
 
 const STEPS = { FORM: 1, PAY: 2, DONE: 3 };
 
