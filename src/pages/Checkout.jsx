@@ -42,11 +42,25 @@ export default function Checkout() {
           custom_subtitle: i.customSubtitle || "",
         })),
       };
-      const res = await api.post("/orders/create/", payload);
-      if (!user) saveGuestOrder(res.data.id, res.data.guest_token);
+      let res;
+      try {
+        res = await api.post("/orders/create/", payload);
+      } catch (firstErr) {
+        // Purana/expired login token guest checkout ko rok sakta hai — hata ke ek baar phir try karo
+        if (firstErr.response?.status === 401) {
+          localStorage.removeItem("sk_tokens");
+          res = await api.post("/orders/create/", payload, {
+            headers: { Authorization: undefined },
+          });
+        } else {
+          throw firstErr;
+        }
+      }
+      if (res.data.guest_token) saveGuestOrder(res.data.id, res.data.guest_token);
       setOrder(res.data);
       setStep(STEPS.PAY);
     } catch (err) {
+      const status = err.response?.status;
       const data = err.response?.data;
       let message = "Could not place order. Please check your details.";
       if (data?.detail) {
@@ -57,9 +71,13 @@ export default function Checkout() {
         if (firstKey && firstVal) {
           message = `${firstKey}: ${Array.isArray(firstVal) ? firstVal[0] : firstVal}`;
         }
+      } else if (status >= 500) {
+        message = `Server error (${status}). Please try again in a minute.`;
+      } else if (!err.response) {
+        message = "Network error — could not reach the server.";
       }
       toast.error(message);
-      console.error("Order create failed:", data || err.message);
+      console.error("Order create failed:", status, data || err.message);
     } finally {
       setSubmitting(false);
     }
