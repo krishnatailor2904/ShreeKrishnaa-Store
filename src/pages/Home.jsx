@@ -108,21 +108,14 @@ function EngraveDemo() {
 }
 
 const categoryCopy = {
-  "acrylic-name-plates": {
-    blurb: "Sleek, lightweight, laser-engraved.",
+  "name-plate": {
+    blurb: "Custom made for you.",
     img: "/products/Acrlic.jpg",
   },
-  "metal-name-plates": {
-    blurb: "Solid brass & steel, built to last.",
+
+  "shoes-police": {
+    blurb: "Professional police shoes.",
     img: "/products/Metal.jpg",
-  },
-  "hotel-staff-badges": {
-    blurb: "Sharp, professional, pin-ready.",
-    img: "/products/Hotel_Staff.jpg",
-  },
-  "doctor-name-plates": {
-    blurb: "Clinic-ready, elegant finishes.",
-    img: "/products/Doctor.jpg",
   },
 };
 
@@ -359,11 +352,11 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {categories.map((cat, i) => {
-              const copy =
-                categoryCopy[cat.slug] || {
-                  blurb: "Custom made for you.",
-                  img: "/products/Acrlic.png",
-                };
+             const copy =
+  categoryCopy[cat.slug] || {
+    blurb: "Custom made for you.",
+    img: "/products/Acrlic.jpg",
+  };
 
               return (
                 <motion.div
