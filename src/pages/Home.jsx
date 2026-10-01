@@ -115,7 +115,7 @@ const categoryCopy = {
 
   "shoes-police": {
     blurb: "Professional police shoes.",
-    img: "/products/Metal.jpg",
+    img: "/products/shoes.png",
   },
 };
 
