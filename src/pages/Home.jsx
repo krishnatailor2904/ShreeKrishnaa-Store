@@ -110,7 +110,7 @@ function EngraveDemo() {
 const categoryCopy = {
   "name-plate": {
     blurb: "Custom made for you.",
-    img: "/products/Acrlic.jpg",
+    img: "/products/Acrlic_10.jpg",
   },
 
   "shoes-police": {
