@@ -117,6 +117,10 @@ const categoryCopy = {
     blurb: "Professional police shoes.",
     img: "/products/shoes.png",
   },
+  "ranks": {
+    blurb: "Professional police shoes.",
+    img: "/products/DG set.png",
+  },
 };
 
 export default function Home() {
