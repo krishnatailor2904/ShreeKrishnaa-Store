@@ -235,7 +235,7 @@ export default function Home() {
       </Helmet>
 
       <div>
-        {/* ================= HERO ================= */}
+        {/* HERO */}
         <section className="relative overflow-hidden bg-teal-700">
           <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(circle_at_20%_20%,white,transparent_35%)]" />
 
@@ -293,7 +293,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ================= TRUST BAR ================= */}
+        {/* TRUST BAR */}
         <section className="border-b border-sage bg-white">
           <div className="max-w-7xl mx-auto px-6 lg:px-10 py-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
@@ -331,7 +331,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ================= CATEGORIES ================= */}
+        {/* CATEGORIES */}
         <section
           className="max-w-7xl mx-auto px-6 lg:px-10 py-20"
           aria-labelledby="categories-heading"
@@ -400,7 +400,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ================= FEATURED PRODUCTS ================= */}
+        {/* FEATURED PRODUCTS */}
         <section
           className="max-w-7xl mx-auto px-6 lg:px-10 pb-24"
           aria-labelledby="featured-heading"
@@ -456,7 +456,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ================= SEO / BRAND INTRODUCTION ================= */}
+        {/* SEO / BRAND INTRODUCTION */}
         <section className="border-t border-sage bg-sage/20">
           <div className="max-w-4xl mx-auto px-6 lg:px-10 py-16 text-center">
             <p className="font-badge uppercase tracking-[0.3em] text-brass text-xs mb-3">
