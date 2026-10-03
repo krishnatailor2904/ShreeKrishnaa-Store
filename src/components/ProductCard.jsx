@@ -32,17 +32,18 @@ export default function ProductCard({ product, index = 0 }) {
       <div className="group block bg-white rounded-2xl overflow-hidden border border-sage hover:border-teal-300 hover:shadow-plate transition-all duration-300">
 
         {/* Product Image */}
-        <div className="relative aspect-square overflow-hidden bg-sage/40">
+        <div className="relative aspect-square overflow-hidden bg-sage/40 flex items-center justify-center">
 
           <Link
             to={productUrl}
             title={`${product.name} | Shree Krishnaa`}
             aria-label={`View ${product.name}`}
+            className="w-full h-full flex items-center justify-center"
           >
             <img
               src={product.image}
               alt={`${product.name} - Shree Krishnaa`}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500"
               loading={index < 6 ? "eager" : "lazy"}
             />
           </Link>
