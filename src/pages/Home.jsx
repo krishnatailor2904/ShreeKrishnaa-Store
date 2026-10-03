@@ -117,8 +117,9 @@ const categoryCopy = {
     blurb: "Professional police shoes.",
     img: "/products/shoes.png",
   },
-  "ranks": {
-    blurb: "Professional police shoes.",
+
+  ranks: {
+    blurb: "Professional police ranks.",
     img: "/products/DG set.png",
   },
 };
@@ -130,11 +131,13 @@ export default function Home() {
   useEffect(() => {
     api
       .get("/products/categories/")
-      .then((r) => setCategories(r.data));
+      .then((r) => setCategories(r.data))
+      .catch((err) => console.error("Category error:", err));
 
     api
       .get("/products/?featured=true")
-      .then((r) => setFeatured(r.data));
+      .then((r) => setFeatured(r.data))
+      .catch((err) => console.error("Featured products error:", err));
   }, []);
 
   const websiteSchema = {
@@ -189,10 +192,7 @@ export default function Home() {
           content="Shop custom name plates, police accessories, acrylic name plates, metal name plates and professional badges from Shree Krishnaa."
         />
 
-        <meta
-          property="og:type"
-          content="website"
-        />
+        <meta property="og:type" content="website" />
 
         <meta
           property="og:url"
@@ -235,7 +235,7 @@ export default function Home() {
       </Helmet>
 
       <div>
-        {/* HERO */}
+        {/* ================= HERO ================= */}
         <section className="relative overflow-hidden bg-teal-700">
           <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(circle_at_20%_20%,white,transparent_35%)]" />
 
@@ -293,7 +293,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* TRUST BAR */}
+        {/* ================= TRUST BAR ================= */}
         <section className="border-b border-sage bg-white">
           <div className="max-w-7xl mx-auto px-6 lg:px-10 py-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
@@ -331,7 +331,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* CATEGORIES */}
+        {/* ================= CATEGORIES ================= */}
         <section
           className="max-w-7xl mx-auto px-6 lg:px-10 py-20"
           aria-labelledby="categories-heading"
@@ -356,11 +356,10 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {categories.map((cat, i) => {
-             const copy =
-  categoryCopy[cat.slug] || {
-    blurb: "Custom made for you.",
-    img: "/products/Acrlic.jpg",
-  };
+              const copy = categoryCopy[cat.slug] || {
+                blurb: "Custom made for you.",
+                img: "/products/Acrlic.jpg",
+              };
 
               return (
                 <motion.div
@@ -375,11 +374,12 @@ export default function Home() {
                     title={`Shop ${cat.name} | Shree Krishnaa`}
                     className="group block rounded-2xl overflow-hidden bg-white border border-sage hover:shadow-plate transition-all"
                   >
-                    <div className="aspect-[4/3] overflow-hidden bg-sage/40">
+                    {/* FIXED IMAGE AREA */}
+                    <div className="aspect-[4/3] overflow-hidden bg-sage/40 flex items-center justify-center">
                       <img
                         src={copy.img}
                         alt={`${cat.name} - Shree Krishnaa`}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500"
                         loading={i < 2 ? "eager" : "lazy"}
                       />
                     </div>
@@ -400,7 +400,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* FEATURED PRODUCTS */}
+        {/* ================= FEATURED PRODUCTS ================= */}
         <section
           className="max-w-7xl mx-auto px-6 lg:px-10 pb-24"
           aria-labelledby="featured-heading"
@@ -456,7 +456,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SEO / BRAND INTRODUCTION */}
+        {/* ================= SEO / BRAND INTRODUCTION ================= */}
         <section className="border-t border-sage bg-sage/20">
           <div className="max-w-4xl mx-auto px-6 lg:px-10 py-16 text-center">
             <p className="font-badge uppercase tracking-[0.3em] text-brass text-xs mb-3">
