@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
+
 import { Link } from "react-router-dom";
+
 import { motion } from "framer-motion";
+
 import {
   ShieldCheck,
   Truck,
@@ -8,9 +11,11 @@ import {
   BadgeCheck,
   ArrowRight,
 } from "lucide-react";
+
 import { Helmet } from "react-helmet-async";
 
 import api from "../lib/api";
+
 import ProductCard from "../components/ProductCard";
 
 
@@ -146,42 +151,99 @@ export default function Home() {
 
 
   /*
-    CATEGORY ORDER
+    HOME PAGE CATEGORY ORDER
 
     1. Name Plate
     2. Ranks
     3. Police Shoes
     4. Remaining categories
   */
-  const categoryOrder = [
-    "name-plate",
-    "ranks",
-    "shoes-police",
-  ];
 
+  const getCategoryPriority = (category) => {
+    const name = String(category.name || "")
+      .toLowerCase()
+      .trim();
 
-  const orderedCategories = [...categories].sort((a, b) => {
-    const indexA = categoryOrder.indexOf(a.slug);
-    const indexB = categoryOrder.indexOf(b.slug);
+    const slug = String(category.slug || "")
+      .toLowerCase()
+      .trim();
 
-    // Dono ordered list me nahi hain
-    if (indexA === -1 && indexB === -1) {
-      return 0;
-    }
-
-    // Sirf A ordered list me hai
-    if (indexA !== -1 && indexB === -1) {
-      return -1;
-    }
-
-    // Sirf B ordered list me hai
-    if (indexA === -1 && indexB !== -1) {
+    /*
+      NAME PLATE
+      Match by both slug and name
+    */
+    if (
+      slug === "name-plate" ||
+      slug === "name-plates" ||
+      slug.includes("name-plate") ||
+      name === "name plate" ||
+      name === "name plates" ||
+      name.includes("name plate")
+    ) {
       return 1;
     }
 
-    // Dono ordered list me hain
-    return indexA - indexB;
-  });
+
+    /*
+      RANKS
+      Match by slug and category name
+    */
+    if (
+      slug === "ranks" ||
+      slug === "rank" ||
+      slug.includes("rank") ||
+      name === "rank" ||
+      name === "ranks" ||
+      name.includes("rank")
+    ) {
+      return 2;
+    }
+
+
+    /*
+      POLICE SHOES
+      Match by slug and category name
+    */
+    if (
+      slug === "shoes-police" ||
+      slug === "police-shoes" ||
+      slug.includes("shoe") ||
+      name.includes("police shoe") ||
+      name.includes("shoes")
+    ) {
+      return 3;
+    }
+
+
+    /*
+      ALL OTHER CATEGORIES
+      Stay after the above categories
+    */
+    return 999;
+  };
+
+
+  const orderedCategories = [...categories]
+    .map((category, originalIndex) => ({
+      ...category,
+      originalIndex,
+      priority: getCategoryPriority(category),
+    }))
+    .sort((a, b) => {
+      /*
+        First priority:
+        Name Plate → Ranks → Police Shoes
+      */
+      if (a.priority !== b.priority) {
+        return a.priority - b.priority;
+      }
+
+      /*
+        Remaining categories:
+        Keep their original API order.
+      */
+      return a.originalIndex - b.originalIndex;
+    });
 
 
   const websiteSchema = {
@@ -287,6 +349,7 @@ export default function Home() {
 
         {/* HERO */}
         <section className="relative overflow-hidden bg-teal-700">
+
           <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(circle_at_20%_20%,white,transparent_35%)]" />
 
           <div className="max-w-7xl mx-auto px-6 lg:px-10 py-20 lg:py-28 grid lg:grid-cols-2 gap-14 items-center relative">
@@ -297,16 +360,21 @@ export default function Home() {
               transition={{ duration: 0.6 }}
               className="text-ivory"
             >
+
               <p className="font-badge uppercase tracking-[0.3em] text-brass-light text-xs mb-5">
                 — Police Accessories &amp; Name Plates —
               </p>
 
               <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl leading-[1.05] mb-6">
+
                 Custom Name Plates
+
                 <br />
+
                 <span className="italic text-brass-light">
                   engraved with pride.
                 </span>
+
               </h1>
 
               <p className="text-ivory/70 text-lg max-w-md mb-8 leading-relaxed">
@@ -316,6 +384,7 @@ export default function Home() {
               </p>
 
               <div className="flex flex-wrap gap-4">
+
                 <Link
                   to="/shop"
                   className="inline-flex items-center gap-2 bg-brass hover:bg-brass-dark transition-colors text-white px-7 py-3.5 rounded-full font-badge uppercase text-sm tracking-wide"
@@ -330,7 +399,9 @@ export default function Home() {
                 >
                   Our Story
                 </Link>
+
               </div>
+
             </motion.div>
 
 
@@ -344,11 +415,13 @@ export default function Home() {
             </motion.div>
 
           </div>
+
         </section>
 
 
         {/* TRUST BAR */}
         <section className="border-b border-sage bg-white">
+
           <div className="max-w-7xl mx-auto px-6 lg:px-10 py-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
 
             {[
@@ -377,6 +450,7 @@ export default function Home() {
                 key={label}
                 className="flex flex-col items-center gap-2"
               >
+
                 <Icon
                   className="w-6 h-6 text-teal-600"
                   strokeWidth={1.5}
@@ -385,11 +459,13 @@ export default function Home() {
                 <span className="text-xs font-badge uppercase tracking-wide text-ink/60">
                   {label}
                 </span>
+
               </div>
 
             ))}
 
           </div>
+
         </section>
 
 
@@ -446,6 +522,7 @@ export default function Home() {
                   >
 
                     {/* FIXED IMAGE AREA */}
+
                     <div className="aspect-[4/3] overflow-hidden bg-sage/40 flex items-center justify-center">
 
                       <img
@@ -483,6 +560,7 @@ export default function Home() {
 
 
         {/* FEATURED PRODUCTS */}
+
         <section
           className="max-w-7xl mx-auto px-6 lg:px-10 pb-24"
           aria-labelledby="featured-heading"
@@ -526,11 +604,13 @@ export default function Home() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
 
             {featured.map((p, i) => (
+
               <ProductCard
                 key={p.id}
                 product={p}
                 index={i}
               />
+
             ))}
 
           </div>
@@ -553,6 +633,7 @@ export default function Home() {
 
 
         {/* SEO / BRAND INTRODUCTION */}
+
         <section className="border-t border-sage bg-sage/20">
 
           <div className="max-w-4xl mx-auto px-6 lg:px-10 py-16 text-center">
