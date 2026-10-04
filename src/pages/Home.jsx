@@ -13,6 +13,7 @@ import { Helmet } from "react-helmet-async";
 import api from "../lib/api";
 import ProductCard from "../components/ProductCard";
 
+
 function EngraveDemo() {
   const [name, setName] = useState("H.J. Zala");
   const [rank, setRank] = useState("P.S.I");
@@ -107,6 +108,7 @@ function EngraveDemo() {
   );
 }
 
+
 const categoryCopy = {
   "name-plate": {
     blurb: "Custom made for you.",
@@ -124,9 +126,11 @@ const categoryCopy = {
   },
 };
 
+
 export default function Home() {
   const [categories, setCategories] = useState([]);
   const [featured, setFeatured] = useState([]);
+
 
   useEffect(() => {
     api
@@ -140,8 +144,49 @@ export default function Home() {
       .catch((err) => console.error("Featured products error:", err));
   }, []);
 
+
+  /*
+    CATEGORY ORDER
+
+    1. Name Plate
+    2. Ranks
+    3. Police Shoes
+    4. Remaining categories
+  */
+  const categoryOrder = [
+    "name-plate",
+    "ranks",
+    "shoes-police",
+  ];
+
+
+  const orderedCategories = [...categories].sort((a, b) => {
+    const indexA = categoryOrder.indexOf(a.slug);
+    const indexB = categoryOrder.indexOf(b.slug);
+
+    // Dono ordered list me nahi hain
+    if (indexA === -1 && indexB === -1) {
+      return 0;
+    }
+
+    // Sirf A ordered list me hai
+    if (indexA !== -1 && indexB === -1) {
+      return -1;
+    }
+
+    // Sirf B ordered list me hai
+    if (indexA === -1 && indexB !== -1) {
+      return 1;
+    }
+
+    // Dono ordered list me hain
+    return indexA - indexB;
+  });
+
+
   const websiteSchema = {
     "@context": "https://schema.org",
+
     "@graph": [
       {
         "@type": "Organization",
@@ -149,12 +194,14 @@ export default function Home() {
         url: "https://shreekrishnaa.com/",
         logo: "https://shreekrishnaa.com/logo.png",
       },
+
       {
         "@type": "WebSite",
         name: "Shree Krishnaa",
         url: "https://shreekrishnaa.com/",
         description:
           "Shree Krishnaa offers premium police accessories, custom name plates, acrylic name plates, metal name plates and professional badges with delivery across India.",
+
         publisher: {
           "@type": "Organization",
           name: "Shree Krishnaa",
@@ -162,6 +209,7 @@ export default function Home() {
       },
     ],
   };
+
 
   return (
     <>
@@ -234,12 +282,15 @@ export default function Home() {
         </script>
       </Helmet>
 
+
       <div>
+
         {/* HERO */}
         <section className="relative overflow-hidden bg-teal-700">
           <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(circle_at_20%_20%,white,transparent_35%)]" />
 
           <div className="max-w-7xl mx-auto px-6 lg:px-10 py-20 lg:py-28 grid lg:grid-cols-2 gap-14 items-center relative">
+
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -282,6 +333,7 @@ export default function Home() {
               </div>
             </motion.div>
 
+
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -290,30 +342,37 @@ export default function Home() {
             >
               <EngraveDemo />
             </motion.div>
+
           </div>
         </section>
+
 
         {/* TRUST BAR */}
         <section className="border-b border-sage bg-white">
           <div className="max-w-7xl mx-auto px-6 lg:px-10 py-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+
             {[
               {
                 icon: ShieldCheck,
                 label: "Durable Build",
               },
+
               {
                 icon: Sparkles,
                 label: "Sharp Engraving",
               },
+
               {
                 icon: Truck,
                 label: "Pan-India Delivery",
               },
+
               {
                 icon: BadgeCheck,
                 label: "Trusted by Officers",
               },
             ].map(({ icon: Icon, label }) => (
+
               <div
                 key={label}
                 className="flex flex-col items-center gap-2"
@@ -327,16 +386,21 @@ export default function Home() {
                   {label}
                 </span>
               </div>
+
             ))}
+
           </div>
         </section>
+
 
         {/* CATEGORIES */}
         <section
           className="max-w-7xl mx-auto px-6 lg:px-10 py-20"
           aria-labelledby="categories-heading"
         >
+
           <div className="text-center mb-12">
+
             <p className="font-badge uppercase tracking-[0.3em] text-brass text-xs mb-3">
               Browse by category
             </p>
@@ -352,14 +416,19 @@ export default function Home() {
               Explore acrylic name plates, metal name plates, hotel staff
               badges and doctor name plates designed for professional use.
             </p>
+
           </div>
 
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-            {categories.map((cat, i) => {
+
+            {orderedCategories.map((cat, i) => {
+
               const copy = categoryCopy[cat.slug] || {
                 blurb: "Custom made for you.",
                 img: "/products/Acrlic.jpg",
               };
+
 
               return (
                 <motion.div
@@ -369,22 +438,28 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08 }}
                 >
+
                   <Link
                     to={`/shop?category=${cat.slug}`}
                     title={`Shop ${cat.name} | Shree Krishnaa`}
                     className="group block rounded-2xl overflow-hidden bg-white border border-sage hover:shadow-plate transition-all"
                   >
+
                     {/* FIXED IMAGE AREA */}
                     <div className="aspect-[4/3] overflow-hidden bg-sage/40 flex items-center justify-center">
+
                       <img
                         src={copy.img}
                         alt={`${cat.name} - Shree Krishnaa`}
                         className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500"
                         loading={i < 2 ? "eager" : "lazy"}
                       />
+
                     </div>
 
+
                     <div className="p-4">
+
                       <h3 className="font-display text-lg text-ink">
                         {cat.name}
                       </h3>
@@ -392,21 +467,31 @@ export default function Home() {
                       <p className="text-xs text-ink/50 mt-1">
                         {copy.blurb}
                       </p>
+
                     </div>
+
                   </Link>
+
                 </motion.div>
               );
+
             })}
+
           </div>
+
         </section>
+
 
         {/* FEATURED PRODUCTS */}
         <section
           className="max-w-7xl mx-auto px-6 lg:px-10 pb-24"
           aria-labelledby="featured-heading"
         >
+
           <div className="flex items-end justify-between mb-10">
+
             <div>
+
               <p className="font-badge uppercase tracking-[0.3em] text-brass text-xs mb-3">
                 Featured Collection
               </p>
@@ -422,7 +507,9 @@ export default function Home() {
                 Discover our featured custom name plates and professional
                 accessories from Shree Krishnaa.
               </p>
+
             </div>
+
 
             <Link
               to="/shop"
@@ -432,9 +519,12 @@ export default function Home() {
               View All
               <ArrowRight className="w-4 h-4" />
             </Link>
+
           </div>
 
+
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+
             {featured.map((p, i) => (
               <ProductCard
                 key={p.id}
@@ -442,9 +532,12 @@ export default function Home() {
                 index={i}
               />
             ))}
+
           </div>
 
+
           <div className="mt-10 text-center sm:hidden">
+
             <Link
               to="/shop"
               title="Shop all Shree Krishnaa products"
@@ -453,12 +546,17 @@ export default function Home() {
               View All Products
               <ArrowRight className="w-4 h-4" />
             </Link>
+
           </div>
+
         </section>
+
 
         {/* SEO / BRAND INTRODUCTION */}
         <section className="border-t border-sage bg-sage/20">
+
           <div className="max-w-4xl mx-auto px-6 lg:px-10 py-16 text-center">
+
             <p className="font-badge uppercase tracking-[0.3em] text-brass text-xs mb-3">
               Shree Krishnaa
             </p>
@@ -476,6 +574,7 @@ export default function Home() {
             </p>
 
             <div className="mt-7">
+
               <Link
                 to="/shop"
                 className="inline-flex items-center gap-2 text-teal-700 font-badge uppercase text-sm tracking-wide hover:gap-2"
@@ -483,9 +582,13 @@ export default function Home() {
                 Explore the collection
                 <ArrowRight className="w-4 h-4" />
               </Link>
+
             </div>
+
           </div>
+
         </section>
+
       </div>
     </>
   );
