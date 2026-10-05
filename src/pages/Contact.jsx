@@ -22,7 +22,7 @@ Email: ${form.email}
 Message:
 ${form.message}`;
 
-    const whatsappUrl = `https://wa.me/919033536071?text=${encodeURIComponent(
+    const whatsappUrl = `https://wa.me/916353454404?text=${encodeURIComponent(
       whatsappMessage
     )}`;
 
@@ -47,7 +47,7 @@ ${form.message}`;
       "@type": "Organization",
       name: "Shree Krishnaa",
       url: "https://shreekrishnaa.com/",
-      telephone: "+91 9033536071",
+      telephone: "+91 6353454404",
       email: "shreekrishnaa@gmail.com",
       address: {
         "@type": "PostalAddress",
@@ -154,10 +154,10 @@ ${form.message}`;
                 </h2>
 
                 <a
-                  href="tel:+919033536071"
+                  href="tel:+916353454404"
                   className="text-ink/60 text-sm hover:text-teal-600 transition-colors"
                 >
-                  +91 9033536071
+                  +91 6353454404
                 </a>
               </div>
             </div>
@@ -203,7 +203,7 @@ ${form.message}`;
             {/* WHATSAPP */}
             <div className="pt-2">
               <a
-                href="https://wa.me/919033536071"
+                href="https://wa.me/916353454404"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-full font-badge uppercase tracking-wide text-sm transition-colors"
